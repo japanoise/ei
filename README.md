@@ -46,3 +46,10 @@ strongly advised to either stop using EBCDIC, or fork and patch it yourself.
 The original standard unix text editor was Ed. An extended version called Em,
 the Editor for Mortals, was written. Now as a riff on that, and because I like
 two-letter names, we have ei - the Editor for Immortals!
+
+## credits
+
+- Craig A. Finseth, whose book ["The Craft of Text Editing"][craft] describes
+  many of the high-level interfaces used for ei.
+
+[craft]: http://www.finseth.com/craft/

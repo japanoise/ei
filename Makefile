@@ -1,6 +1,6 @@
 progname=ei
 LD_FLAGS=-lncursesw
-objs=main.o keys.o
+objs=main.o keys.o modes.o buffer.o
 
 all: $(progname)
 
