@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "buffer.h"
@@ -26,8 +27,8 @@ status Buffer_Clear(buffer * buf)
 		Modelist_Del(buf->mode_list);
 	}
 	buf->contents = calloc(1, sizeof(storage));
-	buf->contents->data = calloc(100, 1);
-	buf->contents->buffersize = 100;
+	buf->contents->data = calloc(10, 1);
+	buf->contents->buffersize = 10;
 	return STAT_OK;
 }
 
@@ -91,4 +92,62 @@ location Point_Get(buffer * buf)
 int Point_Get_Line(buffer * buf)
 {
 	return buf->cur_line;
+}
+
+void Get_File_Name(buffer * buf, char * strbuffer, size_t strbufsize)
+{
+	strbuffer[0]='\0';
+	strncat(strbuffer, buf->file_name, strbufsize);
+}
+
+status Set_File_Name(buffer * buf, char * file_name)
+{
+	buf->file_name[0]='\0';
+	strncat(buf->file_name, file_name, BUFFERNAMEMAX);
+	return STAT_OK;
+}
+
+status Buffer_Read(buffer * buf)
+{
+	Buffer_Clear(buf);
+
+	/* Actually open the happy chappy up */
+	FILE * fi = fopen(buf->file_name, "r");
+	if (fi == NULL) return STAT_FAIL;
+
+	/* Go to eof */
+	if (fseek(fi, 0L, SEEK_END) != 0) return STAT_FAIL;
+
+	/* Get filesize */
+	long bufsize = ftell(fi);
+	if (bufsize == -1) return STAT_FAIL;
+
+	/* Expand the buffer as such */
+	buf->contents->buffersize = bufsize+11;
+	buf->contents->data = realloc(buf->contents->data, buf->contents->buffersize);
+
+	/* Go to bof */
+	if (fseek(fi, 0L, SEEK_SET) != 0) return STAT_FAIL;
+
+	/* Read the file into memory */
+	buf->num_chars = fread(buf->contents->data, 1, bufsize, fi);
+
+	/* Clean up and return */
+	status ret = STAT_OK;
+	if (ferror(fi) != 0) ret = STAT_FAIL;
+	fclose(fi);
+	return ret;
+}
+
+status Buffer_Write(buffer * buf)
+{
+	FILE * fi = fopen(buf->file_name, "w");
+	if (fi == NULL) return STAT_FAIL;
+
+	for (int i = 0; i < buf->num_chars; i++) {
+		fputc(buf->contents->data[i], fi);
+	}
+
+	fclose(fi);
+	return STAT_OK;
 }
