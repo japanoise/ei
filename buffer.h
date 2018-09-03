@@ -1,6 +1,6 @@
 #ifndef BUFFER_H
 #define BUFFER_H
-#include<stdbool.h>
+#include <stdbool.h>
 #include "defines.h"
 #include "modes.h"
 

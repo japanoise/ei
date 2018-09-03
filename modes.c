@@ -1,4 +1,4 @@
-#include<stdlib.h>
+#include <stdlib.h>
 #include "modes.h"
 
 void Modelist_Del(mode * mode_list)
