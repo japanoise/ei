@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include "buffer.h"
 #include "keys.h"
+#include "world.h"
 
 void draw(buffer *curbuf) {
 	int sx, sy;
@@ -56,6 +57,7 @@ int main(int argc, char *argv[])
 		}
 		curbuf->next_chain_entry = scrbuf;
 	}
+	world * w = World_Create(curbuf);
 
 	/* SCREEN SETUP */
 	/* Needed for UTF-8 support */
@@ -83,7 +85,7 @@ int main(int argc, char *argv[])
 	}
 
 	/* Teardown */
-	Buffer_Delete(curbuf);
+	World_Destroy(w);
 	endwin();
 
 	return 0;

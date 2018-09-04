@@ -1,6 +1,7 @@
 #include "keys.h"
+#include "world.h"
 #ifdef QWERTY
-bool do_key(int key)
+bool do_key(world *w, int key)
 {
 	switch (key) {
 	case '@':
@@ -62,7 +63,7 @@ bool do_key(int key)
 	return true;
 }
 #else
-bool do_key(int key)
+bool do_key(world *w, int key)
 {
 	switch (key) {
 	case '@':
