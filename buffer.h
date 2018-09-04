@@ -36,4 +36,6 @@ void Get_File_Name(buffer * buf, char *strbuffer, size_t strbufsize);
 status Set_File_Name(buffer * buf, char *file_name);
 status Buffer_Read(buffer * buf);
 status Buffer_Write(buffer * buf);
+void Forward_Char(buffer * buf);
+void Backward_Char(buffer * buf);
 #endif

@@ -164,3 +164,13 @@ status Buffer_Write(buffer * buf)
 	fclose(fi);
 	return STAT_OK;
 }
+
+void Forward_Char(buffer * buf)
+{
+	Point_Move(buf, 1);
+}
+
+void Backward_Char(buffer * buf)
+{
+	Point_Move(buf, -1);
+}

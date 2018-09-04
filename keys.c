@@ -13,10 +13,12 @@ bool do_key(world * w, int key)
 	case 'C':
 		break;
 	case 'D':
+		Backward_Char(w->curbuf);
 		break;
 	case 'E':
 		break;
 	case 'F':
+		Forward_Char(w->curbuf);
 		break;
 	case 'G':
 		break;
@@ -77,6 +79,7 @@ bool do_key(world * w, int key)
 	case 'D':
 		break;
 	case 'E':
+		Backward_Char(w->curbuf);
 		break;
 	case 'F':
 		break;
@@ -110,6 +113,7 @@ bool do_key(world * w, int key)
 	case 'T':
 		break;
 	case 'U':
+		Forward_Char(w->curbuf);
 		break;
 	case 'V':
 		break;
