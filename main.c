@@ -10,8 +10,9 @@ void draw(buffer * curbuf)
 {
 	int sx, sy;
 	getmaxyx(stdscr, sy, sx);
-	sy -= 2;		/* Save space for the mode line & minibuffer */
+	sy -= 3;		/* Save space for the mode line & minibuffer */
 
+	/* Draw the buffer */
 	int i, x, y;
 	i = 0;
 	int cpx, cpy;
@@ -36,6 +37,13 @@ void draw(buffer * curbuf)
 				i++;
 		}
 	}
+
+	/* Draw the modeline */
+	attron(A_REVERSE);
+	move(sy+1,0);
+	for(int i = 0; i < sx; i++) addch('-');
+	mvprintw(sy+1, 0, "-- %s -- %d bytes ", curbuf->buffer_name, curbuf->num_chars);
+	attroff(A_REVERSE);
 
 	move(cpy, cpx);
 	refresh();
@@ -73,7 +81,7 @@ int main(int argc, char *argv[])
 
 	/* Main loop */
 	while (running) {
-		draw(curbuf);
+		draw(w->curbuf);
 		ch = getch();
 		if (escape) {
 			/* Alt was pressed */
