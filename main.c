@@ -76,13 +76,13 @@ int main(int argc, char *argv[])
 		ch = getch();
 		if (escape) {
 			/* Alt was pressed */
-			running = do_key(ch & 0xdf);
+			running = do_key(w, ch & 0xdf);
 		} else if (ch == 0x1b) {
 			/* Escape */
 			escape = true;
 		} else if (ch < ' ') {
 			/* Control character */
-			running = do_key(ch + 0x40);
+			running = do_key(w, ch + 0x40);
 		}
 	}
 

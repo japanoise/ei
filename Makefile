@@ -4,7 +4,7 @@ LD_FLAGS=-lncursesw
 PREFIX=/usr/local
 INSTALL_PROGRAM=install -m 0755 -s
 INSTALL_FILE=install -m 0644
-OBJS=main.o keys.o modes.o buffer.o
+OBJS=main.o keys.o modes.o buffer.o world.o
 
 all: $(PROGNAME)
 
