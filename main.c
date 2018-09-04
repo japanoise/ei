@@ -5,6 +5,38 @@
 #include "buffer.h"
 #include "keys.h"
 
+void draw(buffer *curbuf) {
+	int sx, sy;
+	getmaxyx(stdscr, sy, sx);
+	sy-=2; /* Save space for the mode line & minibuffer */
+
+	int i, x, y;
+	i = x = y = 0;
+	int cpx, cpy;
+	move(0, 0);
+	while (y<=sy&&i<curbuf->num_chars) {
+		if (curbuf->contents->data[i]=='\n') {
+			y++;
+			x=0;
+			move(y, 0);
+		} else {
+			addch(curbuf->contents->data[i]);
+			if (i==curbuf->point) {
+				cpx = x;
+				cpy = y;
+			}
+			x++;
+		}
+		i++;
+		if (x>sx) {
+			while (curbuf->contents->data[i]!='\n' && i<curbuf->num_chars) i++;
+		}
+	}
+
+	move(cpy, cpx);
+	refresh();
+}
+
 int main(int argc, char *argv[])
 {
 	int ch;
@@ -34,17 +66,9 @@ int main(int argc, char *argv[])
 	keypad(stdscr, TRUE);
 	noecho();
 
-	if (curbuf->num_chars > 9) {
-		for (int i = 0; i < 9; i++) {
-			mvaddch(0, i, curbuf->contents->data[i]);
-		}
-	} else {
-		printw("‘Hello World!’");
-	}
-	refresh();
-
 	/* Main loop */
 	while (running) {
+		draw(curbuf);
 		ch = getch();
 		if (escape) {
 			/* Alt was pressed */
