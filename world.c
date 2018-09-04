@@ -3,13 +3,15 @@ typedef struct world {
 	buffer *curbuf;
 } world;
 
-world *World_Create(buffer * curbuf) {
-	world * ret = malloc(sizeof(world));
+world *World_Create(buffer * curbuf)
+{
+	world *ret = malloc(sizeof(world));
 	ret->curbuf = curbuf;
 	return ret;
 }
 
-void World_Destroy(world * w) {
+void World_Destroy(world * w)
+{
 	buffer *firstbuf = w->curbuf;
 	do {
 		buffer *next = w->curbuf->next_chain_entry;
@@ -22,7 +24,7 @@ void World_Destroy(world * w) {
 		}
 		free(w->curbuf);
 		w->curbuf = next;
-	} while(w->curbuf != NULL && w->curbuf!=firstbuf);
+	} while (w->curbuf != NULL && w->curbuf != firstbuf);
 
 	free(w);
 }

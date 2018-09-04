@@ -32,8 +32,8 @@ status Point_Set(buffer * buf, location loc);
 status Point_Move(buffer * buf, int count);
 location Point_Get(buffer * buf);
 int Point_Get_Line(buffer * buf);
-void Get_File_Name(buffer * buf, char * strbuffer, size_t strbufsize);
-status Set_File_Name(buffer * buf, char * file_name);
+void Get_File_Name(buffer * buf, char *strbuffer, size_t strbufsize);
+status Set_File_Name(buffer * buf, char *file_name);
 status Buffer_Read(buffer * buf);
 status Buffer_Write(buffer * buf);
 #endif

@@ -5,6 +5,6 @@ typedef struct world {
 	buffer *curbuf;
 } world;
 
-world * World_Create(buffer * curbuf);
+world *World_Create(buffer * curbuf);
 void World_Destroy(world * w);
 #endif

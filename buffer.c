@@ -94,15 +94,15 @@ int Point_Get_Line(buffer * buf)
 	return buf->cur_line;
 }
 
-void Get_File_Name(buffer * buf, char * strbuffer, size_t strbufsize)
+void Get_File_Name(buffer * buf, char *strbuffer, size_t strbufsize)
 {
-	strbuffer[0]='\0';
+	strbuffer[0] = '\0';
 	strncat(strbuffer, buf->file_name, strbufsize);
 }
 
-status Set_File_Name(buffer * buf, char * file_name)
+status Set_File_Name(buffer * buf, char *file_name)
 {
-	buf->file_name[0]='\0';
+	buf->file_name[0] = '\0';
 	strncat(buf->file_name, file_name, BUFFERNAMEMAX);
 	return STAT_OK;
 }
@@ -113,8 +113,9 @@ status Buffer_Read(buffer * buf)
 	Buffer_Clear(buf);
 
 	/* Actually open the happy chappy up */
-	FILE * fi = fopen(buf->file_name, "r");
-	if (fi == NULL) return STAT_FAIL;
+	FILE *fi = fopen(buf->file_name, "r");
+	if (fi == NULL)
+		return STAT_FAIL;
 
 	/* Go to eof */
 	if (fseek(fi, 0L, SEEK_END)) {
@@ -130,7 +131,7 @@ status Buffer_Read(buffer * buf)
 	}
 
 	/* Expand the buffer as such */
-	buf->contents->buffersize = bufsize+11;
+	buf->contents->buffersize = bufsize + 11;
 	buf->contents->data = realloc(buf->contents->data, buf->contents->buffersize);
 
 	/* Go to bof */
@@ -143,7 +144,8 @@ status Buffer_Read(buffer * buf)
 	buf->num_chars = fread(buf->contents->data, 1, bufsize, fi);
 
 	/* Clean up and return */
-	if (ferror(fi)) ret = STAT_FAIL;
+	if (ferror(fi))
+		ret = STAT_FAIL;
  cleanup:
 	fclose(fi);
 	return ret;
@@ -151,8 +153,9 @@ status Buffer_Read(buffer * buf)
 
 status Buffer_Write(buffer * buf)
 {
-	FILE * fi = fopen(buf->file_name, "w");
-	if (fi == NULL) return STAT_FAIL;
+	FILE *fi = fopen(buf->file_name, "w");
+	if (fi == NULL)
+		return STAT_FAIL;
 
 	for (int i = 0; i < buf->num_chars; i++) {
 		fputc(buf->contents->data[i], fi);
