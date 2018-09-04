@@ -13,20 +13,21 @@ void draw(buffer * curbuf)
 	sy -= 2;		/* Save space for the mode line & minibuffer */
 
 	int i, x, y;
-	i = x = y = 0;
+	i = 0;
 	int cpx, cpy;
 	move(0, 0);
 	while (y <= sy && i < curbuf->num_chars) {
+		getyx(stdscr, y, x);
+		if (i == curbuf->point) {
+			cpx = x;
+			cpy = y;
+		}
 		if (curbuf->contents->data[i] == '\n') {
 			y++;
 			x = 0;
 			move(y, 0);
 		} else {
 			addch(curbuf->contents->data[i]);
-			if (i == curbuf->point) {
-				cpx = x;
-				cpy = y;
-			}
 			x++;
 		}
 		i++;
