@@ -109,6 +109,7 @@ status Set_File_Name(buffer * buf, char * file_name)
 
 status Buffer_Read(buffer * buf)
 {
+	status ret = STAT_OK;
 	Buffer_Clear(buf);
 
 	/* Actually open the happy chappy up */
@@ -116,25 +117,34 @@ status Buffer_Read(buffer * buf)
 	if (fi == NULL) return STAT_FAIL;
 
 	/* Go to eof */
-	if (fseek(fi, 0L, SEEK_END) != 0) return STAT_FAIL;
+	if (fseek(fi, 0L, SEEK_END)) {
+		ret = STAT_FAIL;
+		goto cleanup;
+	}
 
 	/* Get filesize */
 	long bufsize = ftell(fi);
-	if (bufsize == -1) return STAT_FAIL;
+	if (bufsize == -1) {
+		ret = STAT_FAIL;
+		goto cleanup;
+	}
 
 	/* Expand the buffer as such */
 	buf->contents->buffersize = bufsize+11;
 	buf->contents->data = realloc(buf->contents->data, buf->contents->buffersize);
 
 	/* Go to bof */
-	if (fseek(fi, 0L, SEEK_SET) != 0) return STAT_FAIL;
+	if (fseek(fi, 0L, SEEK_SET)) {
+		ret = STAT_FAIL;
+		goto cleanup;
+	}
 
 	/* Read the file into memory */
 	buf->num_chars = fread(buf->contents->data, 1, bufsize, fi);
 
 	/* Clean up and return */
-	status ret = STAT_OK;
-	if (ferror(fi) != 0) ret = STAT_FAIL;
+	if (ferror(fi)) ret = STAT_FAIL;
+ cleanup:
 	fclose(fi);
 	return ret;
 }
