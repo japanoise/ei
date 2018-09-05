@@ -28,8 +28,7 @@ void draw(buffer * curbuf)
 		if (curbuf->contents->data[i] == '\n') {
 			y++;
 			x = 0;
-			m
-				ove(y, 0);
+			move(y, 0);
 		} else {
 			addch(curbuf->contents->data[i]);
 			x++;
