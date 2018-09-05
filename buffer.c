@@ -218,9 +218,13 @@ void Next_Line(buffer * buf)
 {
 	while(buf->point<buf->num_chars-1 && Point_Get_Char(buf)!='\n')
 		Point_Move(buf, 1);
-	if (buf->point!=buf->num_chars-1)
+	if (buf->point<buf->num_chars-1)
 		buf->cur_line++;
 	buf->cur_col = Point_To_Col(buf, buf->cur_col);
+	if(buf->point>buf->last_byte) {
+		while(buf->contents->data[buf->scroll]!='\n') buf->scroll++;
+		buf->scroll++;
+	}
 }
 
 void point_to_bol(buffer * buf)

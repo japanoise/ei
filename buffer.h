@@ -15,6 +15,8 @@ typedef struct buffer {
 	int num_lines;
 	int cur_line;
 	int cur_col;
+	int last_byte;
+	int scroll;
 
 	storage *contents;
 

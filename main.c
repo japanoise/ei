@@ -13,8 +13,9 @@ void draw(buffer * curbuf)
 	sy -= 3;		/* Save space for the mode line & minibuffer */
 
 	/* Draw the buffer */
+	erase();
 	int i, x, y;
-	i = 0;
+	i = curbuf->scroll;
 	int cpx, cpy;
 	cpx = cpy = 0;
 	move(0, 0);
@@ -27,7 +28,8 @@ void draw(buffer * curbuf)
 		if (curbuf->contents->data[i] == '\n') {
 			y++;
 			x = 0;
-			move(y, 0);
+			m
+				ove(y, 0);
 		} else {
 			addch(curbuf->contents->data[i]);
 			x++;
@@ -38,6 +40,7 @@ void draw(buffer * curbuf)
 				i++;
 		}
 	}
+	curbuf->last_byte = i;
 	curbuf->cur_col = cpx;
 
 	/* Draw the modeline */
