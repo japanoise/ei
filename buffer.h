@@ -14,6 +14,7 @@ typedef struct buffer {
 	location num_chars;
 	int num_lines;
 	int cur_line;
+	int cur_col;
 
 	storage *contents;
 
@@ -38,4 +39,7 @@ status Buffer_Read(buffer * buf);
 status Buffer_Write(buffer * buf);
 void Forward_Char(buffer * buf);
 void Backward_Char(buffer * buf);
+void Next_Line(buffer * buf);
+void Prev_Line(buffer * buf);
+void Beg_Of_Line(buffer * buf);
 #endif

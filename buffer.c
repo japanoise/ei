@@ -89,6 +89,11 @@ location Point_Get(buffer * buf)
 	return buf->point;
 }
 
+char Point_Get_Char(buffer * buf)
+{
+	return buf->contents->data[buf->point];
+}
+
 int Point_Get_Line(buffer * buf)
 {
 	return buf->cur_line;
@@ -167,10 +172,75 @@ status Buffer_Write(buffer * buf)
 
 void Forward_Char(buffer * buf)
 {
+	if(Point_Get_Char(buf)=='\n') buf->cur_line++;
 	Point_Move(buf, 1);
 }
 
 void Backward_Char(buffer * buf)
 {
 	Point_Move(buf, -1);
+	if(Point_Get_Char(buf)=='\n') buf->cur_line--;
+}
+
+/*
+ * Note: this function is crap while we wait for better unicode support and a
+ * tab-aligner.
+ *
+ * Problems to fix:
+ * - Assumes tabs are just 8 spaces
+ * - Doesn't take multi-byte characters into affect
+ * - May need modifying when the gap buffer is ready
+ */
+int Point_To_Col(buffer *buf, int col) {
+	int newcol = 0;
+	Point_Move(buf, 1);
+	for(;;) {
+		switch (Point_Get_Char(buf)) {
+		case '\n':
+			goto ret;
+		case '\t':
+			newcol += 8;
+			break;
+		default:
+			newcol++;
+			break;
+		}
+		Point_Move(buf, 1);
+		if (newcol>=col) {
+			goto ret;
+		}
+	}
+ ret:
+	return newcol;
+}
+
+void Next_Line(buffer * buf)
+{
+	while(buf->point<buf->num_chars-1 && Point_Get_Char(buf)!='\n')
+		Point_Move(buf, 1);
+	if (buf->point!=buf->num_chars-1)
+		buf->cur_line++;
+	buf->cur_col = Point_To_Col(buf, buf->cur_col);
+}
+
+void point_to_bol(buffer * buf)
+{
+	while(Point_Get_Char(buf)!='\n' && buf->point>0) {
+		Point_Move(buf, -1);
+	}
+}
+
+void Prev_Line(buffer * buf)
+{
+	if(Point_Get_Char(buf)=='\n') Point_Move(buf, -1);
+	point_to_bol(buf);
+	Point_Move(buf, -1);
+	point_to_bol(buf);
+	buf->cur_col = Point_To_Col(buf, buf->cur_col);
+}
+
+void Beg_Of_Line(buffer * buf)
+{
+	point_to_bol(buf);
+	buf->cur_col = 0;
 }

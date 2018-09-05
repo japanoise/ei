@@ -27,8 +27,10 @@ bool do_key(world * w, int key)
 	case 'I':
 		break;
 	case 'J':
+		Next_Line(w->curbuf);
 		break;
 	case 'K':
+		Prev_Line(w->curbuf);
 		break;
 	case 'L':
 		break;
@@ -47,6 +49,7 @@ bool do_key(world * w, int key)
 	case 'S':
 		break;
 	case 'T':
+		Beg_Of_Line(w->curbuf);
 		break;
 	case 'U':
 		break;
@@ -86,6 +89,7 @@ bool do_key(world * w, int key)
 	case 'G':
 		break;
 	case 'H':
+		Next_Line(w->curbuf);
 		break;
 	case 'I':
 		break;
@@ -111,6 +115,7 @@ bool do_key(world * w, int key)
 	case 'S':
 		break;
 	case 'T':
+		Prev_Line(w->curbuf);
 		break;
 	case 'U':
 		Forward_Char(w->curbuf);
@@ -122,6 +127,7 @@ bool do_key(world * w, int key)
 	case 'X':
 		break;
 	case 'Y':
+		Beg_Of_Line(w->curbuf);
 		break;
 	case 'Z':
 		break;

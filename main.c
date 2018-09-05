@@ -16,6 +16,7 @@ void draw(buffer * curbuf)
 	int i, x, y;
 	i = 0;
 	int cpx, cpy;
+	cpx = cpy = 0;
 	move(0, 0);
 	while (y <= sy && i < curbuf->num_chars) {
 		getyx(stdscr, y, x);
@@ -37,12 +38,14 @@ void draw(buffer * curbuf)
 				i++;
 		}
 	}
+	curbuf->cur_col = cpx;
 
 	/* Draw the modeline */
 	attron(A_REVERSE);
 	move(sy+1,0);
 	for(int i = 0; i < sx; i++) addch('-');
-	mvprintw(sy+1, 0, "-- %s -- %d bytes ", curbuf->buffer_name, curbuf->num_chars);
+	mvprintw(sy+1, 0, "-- %s -- %d:%d -- %d bytes ", curbuf->buffer_name, curbuf->cur_line+1,
+		 curbuf->cur_col, curbuf->num_chars);
 	attroff(A_REVERSE);
 
 	move(cpy, cpx);
